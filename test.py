@@ -4,35 +4,28 @@ import sys,pygame
 from algorithms import *
 
 pygame.init()
-#size = width,height = 320,240
 size = width,height = 990,540
-#speed = [2,2]
+
+gray  = (50,50,50)
 
 black = (0,0,0)
 white = (255,255,255)
-gray  = (50,50,50)
 blue  = (0,0,255)
+green = (0,255,0)
+red   = (255,0,0)
+c6    = (255,255,0)
+c7    = (255,0,255)
+c8    = (0,255,255)
+c9    = (100,50,50)
+c10   = (50,100,50)
+c11   = (50,50,100)
+c12   = (100,0,100)
+c13   = (0,100,100)
+c14   = (8,64,255)
+c15   = (32,4,128)
+c16   = (6,6,6)
 
 screen = pygame.display.set_mode(size)
-
-#ball = pygame.image.load("intro_ball.gif")
-#ballrect = ball.get_rect()
-
-#while l:
-#	for event in pygame.even.get():
-#		if event.type = pygame.QUIT:
-#			sys.exit()
-
-#	ballrect = ballrect.move(speed)
-
-#	if ballrect.left < 0 or ballrect.right > width:
-#		speed[0] = -speed[0]
-#	if ballrect.top  < 0 or ballrect.bottom > height:
-#		speed[1] = -speed[1]
-
-#	screen.fill(black)
-#	screen.blit(ball,ballrect)
-#	pygame.dysplay.flip()
 
 screen.fill(gray)
 pygame.display.flip()
@@ -50,7 +43,7 @@ while True:
 				p1 = ms
 			else :
 				ms = pygame.mouse.get_pos()
-				ps = bresenham(p1,ms)
+				ps = mid_point_circle(p1,ms)
 				p1 = None
 				for i in ps:
 					screen.set_at(i,blue)

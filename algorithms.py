@@ -1,10 +1,60 @@
 #!/usr/bin/python3
 
+import math
+
 width,height = 990,540
 
+def mid_point_circle(p1,p2):
+	raio = round(math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0]) + (p1[1] - p2[1])*(p1[1] - p2[1])))
+	aux  = []
+	pels = []
+
+	x = 0
+	y = raio
+	d = 1 - raio
+
+	aux.append((x,y))
+	print(raio)
+	print(str(p1) + " " + str(p2))
+
+	while y > x:
+		if d < 0:
+			d += (2 * x) + 3
+		else:
+			d += (2 * (x - y)) + 5
+			y -= 1
+		x += 1
+		aux.append((x,y))
+
+	for i in aux:
+		x = i[0]
+		y = i[1]
+
+		pels.append((x,y))
+		pels.append((y,x))
+		pels.append(((-1)*x,y))
+		pels.append(((-1)*y,x))
+		pels.append((x,(-1)*y))
+		pels.append((y,(-1)*x))
+		pels.append(((-1)*x,(-1)*y))
+		pels.append(((-1)*y,(-1)*x))
+
+	aux = pels
+	pels = []
+
+	for i in aux:
+		x = i[0] + p1[0]
+		y = i[1] + p1[1]
+
+		pels.append((x,y))
+#		if x < width and x >= 0 and y < height and y >= 0:
+#			pels.append((x,y))
+
+	return pels
 
 
-#Pratically done, still need to confirm if p1 and p2 are on the line ##################################
+#Pratically done, still need to confirm if p1 and p2 are on the line #################################
+
 def bresenham(p1,p2):
 	pels = []
 	inv = False
