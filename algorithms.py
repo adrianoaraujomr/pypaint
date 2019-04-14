@@ -4,6 +4,67 @@ import math
 
 width,height = 990,540
 
+def flood_field(wmatrix,ms,icolor):
+	subs = None
+	pels = []
+	aux  = []
+	dic  = {}
+
+	subs = wmatrix[ms[0]][ms[1]]
+	if icolor != subs:
+		aux.append(ms)
+		pels.append(ms)
+		wmatrix[ms[0]][ms[1]] = icolor
+	for i in aux:
+		x1 = i[0] - 1
+		x2 = i[0] + 1
+		y1 = i[1] - 1
+		y2 = i[1] + 1
+
+		try:
+			if wmatrix[x1][y1] == subs:
+				wmatrix[x1][y1] = icolor
+				aux.append((x1,y1))
+				pels.append((x1,y1))
+		except:
+			continue
+
+		try:
+			if wmatrix[x2][y1] == subs:
+				wmatrix[x2][y1] = icolor
+				aux.append((x2,y1))
+				pels.append((x2,y1))
+		except:
+			continue
+
+		try:
+			if wmatrix[x1][y2] == subs:
+				wmatrix[x1][y2] = icolor
+				aux.append((x1,y2))
+				pels.append((x1,y2))
+		except:
+			continue
+
+		try:
+			if wmatrix[x2][y2] == subs:
+				wmatrix[x2][y2] = icolor
+				aux.append((x2,y2))
+				pels.append((x2,y2))
+		except:
+			continue
+
+		aux.remove(i)
+
+#	for j in wmatrix:
+#		for i in j:
+#			if i in dic.keys():
+#				dic[i] += 1
+#			else:
+#				dic[i]  = 1
+#	print(dic)
+
+	return pels
+
 def mid_point_circle(p1,p2):
 	raio = round(math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0]) + (p1[1] - p2[1])*(p1[1] - p2[1])))
 	aux  = []
@@ -14,8 +75,8 @@ def mid_point_circle(p1,p2):
 	d = 1 - raio
 
 	aux.append((x,y))
-	print(raio)
-	print(str(p1) + " " + str(p2))
+#	print(raio)
+#	print(str(p1) + " " + str(p2))
 
 	while y > x:
 		if d < 0:
@@ -53,17 +114,20 @@ def mid_point_circle(p1,p2):
 	return pels
 
 
-#Pratically done, still need to confirm if p1 and p2 are on the line #################################
+#Pratically done, still need to confirm if p1 and p2 are in the line #################################
 
 def bresenham(p1,p2):
 	pels = []
 	inv = False
 	neg = False
 
-	print(p1)
-	print(p2)
-	print((p2[1] - p1[1])/(p2[0] - p1[0]))
-	print("-----------------------------------------------------------")
+	if p1 == p2:
+		return pels
+
+#	print(p1)
+#	print(p2)
+#	print((p2[1] - p1[1])/(p2[0] - p1[0]))
+#	print("-----------------------------------------------------------")
 
 #m == 0 -----------------------------------------------------------------------------------------------
 	if p1[0] == p2[0]: #Check if p1 and p2 are in pels
@@ -81,7 +145,7 @@ def bresenham(p1,p2):
 		p2  = aux
 #Solve mirror problem y-axys --------------------------------------------------------------------------
 	if p1[1] > p2[1]:
-		print("Neg")
+#		print("Neg")
 		neg = True
 		base = p1
 		p1 = (0,0)
@@ -95,7 +159,7 @@ def bresenham(p1,p2):
 	y = p1[1]
 
 	if m > 1: 
-		print("Inv")
+#		print("Inv")
 		inv = True
 		dx = p2[1] - p1[1]
 		dy = p2[0] - p1[0]
@@ -129,9 +193,9 @@ def bresenham(p1,p2):
 			aux.append((i[0] + base[0],(i[1] * (-1)) + base[1]))
 		pels = aux
 
-	if p1 not in pels:
-		print("No p1")
-	if p2 not in pels:
-		print("No p2")
+#	if p1 not in pels:
+#		print("No p1")
+#	if p2 not in pels:
+#		print("No p2")
 
 	return pels
