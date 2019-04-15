@@ -10,58 +10,53 @@ def flood_field(wmatrix,ms,icolor):
 	aux  = []
 	dic  = {}
 
+	j = 0
 	subs = wmatrix[ms[0]][ms[1]]
 	if icolor != subs:
 		aux.append(ms)
 		pels.append(ms)
 		wmatrix[ms[0]][ms[1]] = icolor
 	for i in aux:
+		j += 1
+		x  = i[0]
+		y  = i[1]
 		x1 = i[0] - 1
 		x2 = i[0] + 1
 		y1 = i[1] - 1
 		y2 = i[1] + 1
-
 		try:
-			if wmatrix[x1][y1] == subs:
-				wmatrix[x1][y1] = icolor
-				aux.append((x1,y1))
-				pels.append((x1,y1))
+			if wmatrix[x][y1] == subs:
+				wmatrix[x][y1] = icolor
+				aux.append((x,y1))
+				pels.append((x,y1))
 		except:
 			continue
 
 		try:
-			if wmatrix[x2][y1] == subs:
-				wmatrix[x2][y1] = icolor
-				aux.append((x2,y1))
-				pels.append((x2,y1))
+			if wmatrix[x][y2] == subs:
+				wmatrix[x][y2] = icolor
+				aux.append((x,y2))
+				pels.append((x,y2))
 		except:
 			continue
 
 		try:
-			if wmatrix[x1][y2] == subs:
-				wmatrix[x1][y2] = icolor
-				aux.append((x1,y2))
-				pels.append((x1,y2))
+			if wmatrix[x1][y] == subs:
+				wmatrix[x1][y] = icolor
+				aux.append((x1,y))
+				pels.append((x1,y))
 		except:
 			continue
 
 		try:
-			if wmatrix[x2][y2] == subs:
-				wmatrix[x2][y2] = icolor
-				aux.append((x2,y2))
-				pels.append((x2,y2))
+			if wmatrix[x2][y] == subs:
+				wmatrix[x2][y] = icolor
+				aux.append((x2,y))
+				pels.append((x2,y))
 		except:
 			continue
 
-		aux.remove(i)
-
-#	for j in wmatrix:
-#		for i in j:
-#			if i in dic.keys():
-#				dic[i] += 1
-#			else:
-#				dic[i]  = 1
-#	print(dic)
+#		aux.remove(i)
 
 	return pels
 
