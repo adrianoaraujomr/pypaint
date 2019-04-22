@@ -34,6 +34,7 @@ pygame.display.flip()
 p1 = None
 md = 1   #Mode (line(X),circle(X),polyline(X),curve( ),rectangle( ),fill( ))
 mc = (255,255,255) #Color
+pl = []
 
 while True:
 	for event in pygame.event.get():
@@ -91,10 +92,27 @@ while True:
 				elif md == 3: #Polyline
 					ps = bresenham(p1,ms)
 					p1 = ms
+				elif md == 4:
+					if len(pl) == 0:
+						pl.append(p1)
+						pl.append(ms)
+					elif len(pl) < 3:
+						pl.append(ms)
+					else:
+						pl.append(ms)
+						ps = bezier(pl[0],pl[1],pl[2],pl[3])
+						p1 = None
+						pl = []
+				elif md == 5:
+					ps = rectangle(p1,ms)
+					p1 = None
 
-				for i in ps:
-					screen.set_at(i,mc)
-				pygame.display.flip()
+				try:
+					for i in ps:
+						screen.set_at(i,mc)
+					pygame.display.flip()
+				except:
+					continue
 #				wmatrix = pygame.surfarray.array2d(screen)
 #				print(wmatrix[ms[0]][ms[1]])
 			elif p1 is not None and event.button == 3:

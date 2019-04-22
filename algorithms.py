@@ -60,6 +60,39 @@ def flood_field(wmatrix,ms,icolor):
 
 	return pels
 
+def rectangle(p1,p2):
+	pels = []
+
+	p3 = (p1[0],p2[1])
+	p4 = (p2[0],p1[1])
+
+	pels  = bresenham(p1,p3)
+	pels += bresenham(p2,p4)
+	pels += bresenham(p1,p4)
+	pels += bresenham(p2,p3)
+
+	return pels
+
+def bezier(p1,p2,p3,p4):
+	pels = []
+	for t in range(0,100,1):
+		t = t/100
+		omt  = 1 - t
+		omt2 = omt*omt
+		omt3 = omt2*omt
+		t2   = t*t
+		t3   = t2*t
+
+		x = omt3*p1[0] + ((3*omt2)*t*p1[0]) + (3*omt*t2*p3[0]) + t3*p4[0]
+		y = omt3*p1[1] + ((3*omt2)*t*p1[1]) + (3*omt*t2*p3[1]) + t3*p4[1]
+
+		x = int(round(x,0))
+		y = int(round(y,0))
+
+		pels.append((x,y))
+
+	return pels
+
 def mid_point_circle(p1,p2):
 	raio = round(math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0]) + (p1[1] - p2[1])*(p1[1] - p2[1])))
 	aux  = []
@@ -126,12 +159,22 @@ def bresenham(p1,p2):
 
 #m == 0 -----------------------------------------------------------------------------------------------
 	if p1[0] == p2[0]: #Check if p1 and p2 are in pels
-			for i in range(p1[1],p2[1]):
-				pels.append((p1[0],i))
+			if(p1[1] < p2[1]):
+				for i in range(p1[1],p2[1]):
+					pels.append((p1[0],i))
+				return pels
+			else:
+				for i in range(p2[1],p1[1]):
+					pels.append((p1[0],i))
 				return pels
 	elif p1[1] == p2[1]: #Check if p1 and p2 are in pels
-			for i in range(p1[0],p2[0]):
-				pels.append((i,p1[1]))
+			if(p1[0] < p2[0]):
+				for i in range(p1[0],p2[0]):
+					pels.append((i,p1[1]))
+				return pels
+			else:
+				for i in range(p2[0],p1[0]):
+					pels.append((i,p1[1]))
 				return pels
 #Solve mirror problem x-axys --------------------------------------------------------------------------
 	if p1[0] > p2[0]:
