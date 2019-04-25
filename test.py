@@ -4,7 +4,7 @@ import sys,pygame
 from algorithms import *
 
 pygame.init()
-size = width,height = 990,540
+size = width,height = 1001,540
 
 gray  = (50,50,50)
 
@@ -37,6 +37,44 @@ mc = (255,255,255) #Color
 pl = []
 
 while True:
+	for i in range(900,1001,1):
+		c = 300
+		for j in range(0,541):
+			if i == 900 or i == 1000:
+				screen.set_at((i,j),(200,200,200))
+			elif j % 25 == 0 and j <= 100:
+				screen.set_at((i,j),(200,200,200))
+				c -= 50
+			elif j <= 100:
+				if i % 25 == 0:
+					screen.set_at((i,j),(200,200,200))
+				elif i < 925:
+					screen.set_at((i,j),(c,0,0))
+				elif i < 950:
+					screen.set_at((i,j),(0,c,0))
+				elif i < 975:
+					screen.set_at((i,j),(0,0,c))
+				else:
+					screen.set_at((i,j),(c,c,c))
+			elif j % 50 == 0:
+				screen.set_at((i,j),(200,200,200))
+			elif j <= 150:
+				screen.set_at((i,j),(50,50,50))
+			elif j <= 200:
+				screen.set_at((i,j),(50,50,50))
+			elif j <= 250:			
+				screen.set_at((i,j),(50,50,50))
+			elif j <= 300:			
+				screen.set_at((i,j),(50,50,50))
+			elif j <= 350:			
+				screen.set_at((i,j),(50,50,50))
+			elif j <= 400:			
+				screen.set_at((i,j),(50,50,50))
+			else:
+				screen.set_at((i,j),(200,200,200))
+
+	pygame.display.flip()
+
 	for event in pygame.event.get():
 		if   event.type == pygame.QUIT:
 			sys.exit()
@@ -117,3 +155,5 @@ while True:
 #				print(wmatrix[ms[0]][ms[1]])
 			elif p1 is not None and event.button == 3:
 				p1 = None
+
+
