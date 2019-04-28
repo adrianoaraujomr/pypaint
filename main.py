@@ -31,9 +31,64 @@ md = 1   #Mode (line(X),circle(X),polyline(X),curve(X),rectangle(X),fill(X))
 mc = (255,255,255) #Color
 
 #Functions -------------------------------------------------------------------------------------------
-def handle_click(ms):
-	if ms[0] < 900:
+def handle_click(p1,ms,md,mc,pl):
 
+	if ms[0] >= 900:
+		if   ms[0] <= 925  and ms[1] <=  25:
+			mc = colors[pygame.K_q]
+		elif ms[0] <= 950  and ms[1] <=  25:
+			mc = colors[pygame.K_a]
+		elif ms[0] <= 975  and ms[1] <=  25:
+			mc = colors[pygame.K_z]
+		elif ms[0] <= 1000 and ms[1] <=  25:
+			mc = colors[pygame.K_w]
+		elif ms[0] <= 925  and ms[1] <=  50:
+			mc = colors[pygame.K_s]
+		elif ms[0] <= 950  and ms[1] <=  50:
+			mc = colors[pygame.K_x]
+		elif ms[0] <= 975  and ms[1] <=  50:
+			mc = colors[pygame.K_e]
+		elif ms[0] <= 1000 and ms[1] <=  50:
+			mc = colors[pygame.K_d]
+		elif ms[0] <= 925  and ms[1] <=  75:
+			mc = colors[pygame.K_c]
+		elif ms[0] <= 950  and ms[1] <=  75:
+			mc = colors[pygame.K_r]
+		elif ms[0] <= 975  and ms[1] <=  75:
+			mc = colors[pygame.K_f]
+		elif ms[0] <= 1000 and ms[1] <=  75:
+			mc = colors[pygame.K_v]
+		elif ms[0] <= 925  and ms[1] <= 100:
+			mc = colors[pygame.K_t]
+		elif ms[0] <= 950  and ms[1] <= 100:
+			mc = colors[pygame.K_g]
+		elif ms[0] <= 975  and ms[1] <= 100:
+			mc = colors[pygame.K_b]
+		elif ms[0] <= 1000 and ms[1] <= 100:
+			mc = colors[pygame.K_y]
+		elif ms[1] <= 150:
+			md = 1
+		elif ms[1] <= 200:
+			md = 2
+		elif ms[1] <= 250:
+			md = 3
+		elif ms[1] <= 300:
+			md = 4
+		elif ms[1] <= 350:
+			md = 5
+		elif ms[1] <= 400:
+			md = 6
+		if p1 is not None:
+			p1 = None
+	elif md == 6:
+		aux = {}
+		wmatrix = pygame.surfarray.array2d(screen)
+		icolor  = mc[0]*65536 + mc[1]*256 + mc[2]
+		ps = flood_field(wmatrix,ms,icolor)
+		for i in ps:
+			world[i] = mc
+	elif p1 is None:
+		p1 = ms
 	else:
 		if   md == 1:
 			ps = bresenham(p1,ms)
@@ -46,7 +101,7 @@ def handle_click(ms):
 				world[i] = mc
 			p1 = None			
 		elif md == 3:
-			ps = mid_point_circle(p1,ms)
+			ps = bresenham(p1,ms)
 			for i in ps:
 				world[i] = mc
 			p1 = ms			
@@ -59,19 +114,23 @@ def handle_click(ms):
 			else:
 				pl.append(ms)
 				ps = bezier(pl[0],pl[1],pl[2],pl[3])
+				for i in ps:
+					world[i] = mc
 				p1 = None
 				pl = []
 		elif md == 5:
 			ps = rectangle(p1,ms)
-			p1 = None
-		elif md == 6:
-			aux = {}
-			wmatrix = pygame.surfarray.array2d(screen)
-			icolor  = mc[0]*65536 + mc[1]*256 + mc[2]
-			ps = flood_field(wmatrix,ms,icolor)
 			for i in ps:
 				world[i] = mc
+			p1 = None
 
+	
+	aux = []
+	aux.append(p1)
+	aux.append(md)
+	aux.append(mc)
+	aux.append(pl)
+	return aux
 
 
 
@@ -182,14 +241,13 @@ while True:
 		if event.type == pygame.QUIT:
 			sys.exit()
 		if event.type == pygame.MOUSEBUTTONDOWN:
-			if p1 is None and md != 6:
-				p1 = pygame.mouse.get_pos()
-			elif p1 is None:
 				ms = pygame.mouse.get_pos()
-				handle_click(ms)
-			else:
-				ms = pygame.mouse.get_pos()
-				handle_click(ms)
+				aux = handle_click(p1,ms,md,mc,pl)
+				print(aux)
+				p1 = aux[0]
+				md = aux[1]
+				mc = aux[2]
+				pl = aux[3]
 
 	for k in world.keys():
 		screen.set_at(k,world[k])
