@@ -31,7 +31,7 @@ md = 1   #Mode (line(X),circle(X),polyline(X),curve(X),rectangle(X),fill(X))
 mc = (255,255,255) #Color
 
 #Functions -------------------------------------------------------------------------------------------
-def handle_click(p1,ms,md,mc,pl):
+def handle_click(p1,ms,md,mc,pl,ebt):
 
 	if ms[0] >= 900:
 		if   ms[0] <= 925  and ms[1] <=  25:
@@ -80,6 +80,8 @@ def handle_click(p1,ms,md,mc,pl):
 			md = 6
 		if p1 is not None:
 			p1 = None
+	elif md == 3 and ebt == 3:
+		p1 = None
 	elif md == 6:
 		aux = {}
 		wmatrix = pygame.surfarray.array2d(screen)
@@ -242,15 +244,44 @@ while True:
 			sys.exit()
 		if event.type == pygame.MOUSEBUTTONDOWN:
 				ms = pygame.mouse.get_pos()
-				aux = handle_click(p1,ms,md,mc,pl)
-				print(aux)
+				aux = handle_click(p1,ms,md,mc,pl,event.button)
+#				print(aux)
 				p1 = aux[0]
 				md = aux[1]
 				mc = aux[2]
 				pl = aux[3]
 
+	screen.fill(gray)
+
 	for k in world.keys():
 		screen.set_at(k,world[k])
+
+	if p1 is not None:
+		if   md == 1:
+			ms = pygame.mouse.get_pos()
+			ps = bresenham(p1,ms)
+			for p in ps:
+				screen.set_at(p,mc)
+		elif md == 2:
+			ms = pygame.mouse.get_pos()
+			ps = mid_point_circle(p1,ms)
+			for p in ps:
+				screen.set_at(p,mc)
+		elif md == 3:
+			ms = pygame.mouse.get_pos()
+			ps = bresenham(p1,ms)
+			for p in ps:
+				screen.set_at(p,mc)
+		elif md == 4 and len(pl) == 3:
+			ms = pygame.mouse.get_pos()
+			ps = bezier(pl[0],pl[1],pl[2],ms)
+			for p in ps:
+				screen.set_at(p,mc)				
+		elif md == 5:
+			ms = pygame.mouse.get_pos()
+			ps = rectangle(p1,ms)
+			for p in ps:
+				screen.set_at(p,mc)
 
 	pygame.display.flip()
 
